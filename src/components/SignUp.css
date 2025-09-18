@@ -1,0 +1,140 @@
+
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #dbeafe, #f0f4f8);
+  background-image: url(../../public/image.png);
+  background-size: cover;
+  background-color: #f4f7f8;
+  transition: background-color 0.3s ease;
+}
+
+
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url("/background.jpg") center/cover no-repeat;
+  margin-left: 490px;
+}
+
+.signup-form {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px #ccc;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+}
+
+.signup-form input,
+.signup-form button {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+}
+
+body.dark-mode .signup-form {
+  background-color: #222;
+  color: white;
+}
+
+
+.signup-form:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.signup-form h2 {
+  text-align: center;
+  color: #1e3a8a;
+  margin-bottom: 1.5rem;
+}
+
+.signup-form input {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 12px 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.signup-form input:focus {
+  border-color: #3b82f6;
+  outline: none;
+  color: black;
+  background-color: #f0f9ff;
+}
+
+.signup-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 15px;
+  transition: background-color 0.2s ease;
+}
+
+.signup-form button:hover {
+  background-color: #1d4ed8;
+}
+
+@media (max-width: 500px) {
+  .signup-form {
+    padding: 1.5rem;
+  }
+
+  .signup-form h2 {
+    font-size: 20px;
+  }
+}
+
+.signup-container::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.3); 
+  z-index: -1;
+}
+
+
+
+
+.toggle-btn {
+  background-color: #64748b;
+  margin-top: 10px;
+}
+
+.toggle-btn:hover {
+  background-color: #475569;
+}
+
+.login-message {
+  font-size: 0.95rem;
+  color: #555;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.login-link {
+  color: #0072ff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}
