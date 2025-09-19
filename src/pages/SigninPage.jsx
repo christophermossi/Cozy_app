@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import.meta.env.VITE_ELASTIC_IP 
 import "./SignUp.css";
 
 const SigninPage = () => {

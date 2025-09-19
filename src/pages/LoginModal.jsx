@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import.meta.env.VITE_ELASTIC_IP 
 import "./LoginModal.css";
 
 const LoginModal = ({ isOpen, onClose, onSwitchToSignUp, onLoginSuccess }) => {

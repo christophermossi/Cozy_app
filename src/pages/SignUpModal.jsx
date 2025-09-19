@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import.meta.env.VITE_ELASTIC_IP 
 import "./LoginModal.css";
 
 const SignUpModal = ({ isOpen, onClose, onSwitchToLogin, onSignUpSuccess }) => {
