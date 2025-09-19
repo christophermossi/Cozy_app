@@ -19,8 +19,11 @@ jobs:
 
       # Build the project
       - name: Build project
+        env:
+          VITE_ELASTIC_IP: ${{ secrets.VITE_ELASTIC_IP }}
         run: npm run build
 
+      # Deploy to S3
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@master
         with:
