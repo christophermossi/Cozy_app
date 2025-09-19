@@ -173,7 +173,7 @@ export const ShopProvider = ({ children }) => {
   };
 
   // Enhanced cart operations for your existing functionality
-  const loadCartItemsWithAPI = async (apiBaseUrl = 'http://localhost:3000') => {
+  const loadCartItemsWithAPI = async (apiBaseUrl = `${REACT_ELASTIC_IP}`) => {
     try {
       setLoading(true);
       setError(null);

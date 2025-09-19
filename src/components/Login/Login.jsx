@@ -19,7 +19,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/login", formData);
+      const response = await axios.post(`${REACT_ELASTIC_IP}/login`, formData);
 
       alert("Login successful!");
       

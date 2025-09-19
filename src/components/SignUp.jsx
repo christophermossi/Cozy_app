@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./SignUp.css";
+import.meta.env.REACT_ELASTIC_IP 
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +22,7 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/signup", {
+      const response = await fetch("${importREACT_ELASTIC_IP}/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json"},
         body: JSON.stringify(formData),

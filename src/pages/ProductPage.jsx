@@ -18,7 +18,7 @@ const Products = ({ user, onLogout }) => {
   const [showSignUpModal, setShowSignUpModal] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:3000/Products")
+    fetch(`${REACT_ELASTIC_IP}/Products`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch products");
         return res.json();
