@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./SignUp.css";
-import.meta.env.VITE_ELASTIC_IP 
+
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +22,7 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("${importVITE_ELASTIC_IP}/signup", {
+      const response = await fetch("${import.meta.env.VITE_ELASTIC_IP}/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json"},
         body: JSON.stringify(formData),

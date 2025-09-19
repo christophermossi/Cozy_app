@@ -4,7 +4,6 @@ import { Menu, X, Users, LogOut } from "lucide-react";
 import { useShop } from "../context/ShopContext";
 import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
-import.meta.env.VITE_ELASTIC_IP 
 import "./CheckoutPage.css";
 
 const CheckoutPage = ({ user, onLogout }) => {

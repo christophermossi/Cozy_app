@@ -20,7 +20,7 @@ jobs:
       # Build the project
       - name: Build project
         env:
-          VITE_ELASTIC_IP: ${{ secrets.VITE_ELASTIC_IP }}
+          VITE_ELASTIC_IP: ${{secrets.VITE_ELASTIC_IP}}
         run: npm run build
 
       # Deploy to S3

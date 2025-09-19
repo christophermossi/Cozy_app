@@ -4,7 +4,6 @@ import { Menu, X, Users, LogOut } from "lucide-react";
 import { useShop } from "../context/ShopContext";
 import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
-import.meta.env.VITE_ELASTIC_IP 
 import "./ProductPage.css";
 
 const Products = ({ user, onLogout }) => {
@@ -19,7 +18,7 @@ const Products = ({ user, onLogout }) => {
   const [showSignUpModal, setShowSignUpModal] = useState(false);
 
   useEffect(() => {
-    fetch(`${VITE_ELASTIC_IP}/Products`)
+    fetch(`${import.meta.env.VITE_ELASTIC_IP}/Products`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch products");
         return res.json();

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import ProductPage from "./ProductPage";
 import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
-import.meta.env.VITE_ELASTIC_IP 
+
 
 import {
   Menu,

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../Login/Login.css";
 
+
 const Login = () => {
   const [formData, setFormData] = useState({
     Email: "",
@@ -19,8 +20,9 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${VITE_ELASTIC_IP}/login`, formData);
-
+      console.log("VITE_ELASTIC_IP:", import.meta.env.VITE_ELASTIC_IP);
+      const response = await axios.post(`${import.meta.env.VITE_ELASTIC_IP}/login`, formData);
+      
       alert("Login successful!");
       
       // Store authentication status

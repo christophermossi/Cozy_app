@@ -4,7 +4,7 @@ import { Menu, X, Users, LogOut, Package, CheckCircle, Truck, Clock } from "luci
 import { useShop } from "../context/ShopContext";
 import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
-import.meta.env.VITE_ELASTIC_IP 
+
 
 const OrderPage = ({ user, onLogout }) => {
   const { cartItems, getCartTotal, clearCart } = useShop();

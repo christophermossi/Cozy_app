@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import.meta.env.VITE_ELASTIC_IP 
+
 import "./LoginModal.css";
 
 const LoginModal = ({ isOpen, onClose, onSwitchToSignUp, onLoginSuccess }) => {
@@ -16,7 +16,8 @@ const LoginModal = ({ isOpen, onClose, onSwitchToSignUp, onLoginSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${VITE_ELASTIC_IP}/login`, formData);
+      const response = await axios.post(`${import.meta.env.VITE_ELASTIC_IP}/login`, formData);
+      
 
       alert("Login successful!");
       

@@ -16,7 +16,7 @@ const SignUpModal = ({ isOpen, onClose, onSwitchToLogin, onSignUpSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${VITE_ELASTIC_IP}/signup`, {
+      const response = await fetch(`${import.meta.env.VITE_ELASTIC_IP}/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json"},
         body: JSON.stringify(formData),

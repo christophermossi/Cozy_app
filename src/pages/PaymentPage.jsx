@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Menu, X, Users, LogOut, CreditCard, Calendar, Lock, Package, ShoppingCart } from "lucide-react";
 import { useShop } from "../context/ShopContext";
-import.meta.env.VITE_ELASTIC_IP 
 import "./PaymentPage.css";
 
 const PaymentPage = ({ user, onLogout }) => {
