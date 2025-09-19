@@ -78,7 +78,7 @@ const Homepage = ({ user, onLogout }) => {
 
               {/* Desktop Menu */}
               <div className="menu-desktop">
-                {["Pozi", "Products", "Services", "About", "Contact"].map(
+                {["Home", "Products", "Services", "About", "Contact"].map(
                   (item) => (
                     <button
                       key={item}
