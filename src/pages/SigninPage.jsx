@@ -21,7 +21,7 @@ const SigninPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${REACT_ELASTIC_IP}/login`, {
+      const response = await fetch(`${VITE_ELASTIC_IP}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json"},
         body: JSON.stringify(formData),
