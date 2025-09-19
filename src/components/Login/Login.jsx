@@ -21,8 +21,8 @@ const Login = () => {
     e.preventDefault();
     try {
       console.log("VITE_ELASTIC_IP:", import.meta.env.VITE_ELASTIC_IP);
-      const response = await axios.post(`${import.meta.env.VITE_ELASTIC_IP}/login`, formData);
-      
+      axios.post(`${import.meta.env.VITE_API_BASE}/login`, formData);
+
       alert("Login successful!");
       
       // Store authentication status
