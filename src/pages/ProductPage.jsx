@@ -18,7 +18,7 @@ const Products = ({ user, onLogout }) => {
   const [showSignUpModal, setShowSignUpModal] = useState(false);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_ELASTIC_IP}/Products`)
+    fetch(`${import.meta.env.VITE_ELASTIC_IP}/products`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch products");
         return res.json();
