@@ -13,6 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Build the project
+      - name: Build project
+        run: npm run build
+
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@master
         with:
@@ -22,4 +30,4 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: us-east-1 # must be lowercase and no spaces
-          SOURCE_DIR: dist # Vite build folder
+          SOURCE_DIR: dist # make sure this matches your build output folder
