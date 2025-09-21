@@ -26,6 +26,20 @@ const Cart = ({ user, onLogout }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Add the new URL logic
+  const OrderPage = () => {
+  const { backendUrl } = useShop();
+
+  useEffect(() => {
+    if (!backendUrl) return;
+    fetch(`${backendUrl}/api/orders`)
+      .then(res => res.json())
+      .then(data => console.log("Orders:", data))
+      .catch(err => console.error("Error:", err));
+  }, [backendUrl]);
+};
+
+    
     loadCartItemsWithAPI();
   }, []);
 
@@ -328,7 +342,7 @@ const Cart = ({ user, onLogout }) => {
       <footer
         className="footer"
         style={{
-          width: "105.3%",
+          width: "100%",
           backgroundColor: "#1f2937",
           padding: "1rem",
           textAlign: "center",

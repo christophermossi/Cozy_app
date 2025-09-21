@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react'; 
 
 // Create the context
 const ShopContext = createContext();
@@ -19,9 +19,24 @@ export const ShopProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Initialize cart from localStorage on mount
+  // ✅ NEW: backend URL state
+  const [backendUrl, setBackendUrl] = useState("");
+
+  // Initialize cart & backend URL on mount
   useEffect(() => {
     initializeCart();
+
+    // ✅ Dynamically set backend URL
+    const fullUrl = new URL(window.location);
+    const ip = fullUrl.searchParams.get("ip");
+
+    if (ip) {
+      setBackendUrl(`http://${ip}:3000`);
+      // Clean the URL (remove ?ip=)
+      window.history.pushState({}, "", fullUrl.origin + fullUrl.pathname);
+    } else {
+      setBackendUrl("http://54.208.79.216:3000"); // fallback to your public IP
+    }
   }, []);
 
   // Update localStorage whenever cartItems changes
@@ -68,14 +83,12 @@ export const ShopProvider = ({ children }) => {
         const existingItem = prevItems.find(item => item._id === product._id);
         
         if (existingItem) {
-          // Update quantity of existing item
           return prevItems.map(item =>
             item._id === product._id
               ? { ...item, qty: (parseInt(item.qty) || 1) + 1 }
               : item
           );
         } else {
-          // Add new item to cart
           const newItem = {
             _id: product._id,
             ProductName: product.ProductName,
@@ -99,11 +112,7 @@ export const ShopProvider = ({ children }) => {
   const removeFromCart = (productId) => {
     try {
       setError(null);
-      
-      setCartItems(prevItems => 
-        prevItems.filter(item => item._id !== productId)
-      );
-      
+      setCartItems(prevItems => prevItems.filter(item => item._id !== productId));
       return true;
     } catch (error) {
       console.error('Error removing from cart:', error);
@@ -172,8 +181,7 @@ export const ShopProvider = ({ children }) => {
     return cartItems.find(item => item._id === productId);
   };
 
-  // Enhanced cart operations for your existing functionality
-  const loadCartItemsWithAPI = async (apiBaseUrl = `${REACT_ELASTIC_IP}`) => {
+  const loadCartItemsWithAPI = async () => {
     try {
       setLoading(true);
       setError(null);
@@ -183,20 +191,12 @@ export const ShopProvider = ({ children }) => {
         return [];
       }
 
-      // Fetch all products from API
-      const response = await fetch(`${apiBaseUrl}/Products`);
-      
-      if (!response.ok) {
-        throw new Error(`Failed to fetch products: ${response.status} ${response.statusText}`);
-      }
+      const response = await fetch(`${backendUrl}/Products`);
+      if (!response.ok) throw new Error(`Failed to fetch products: ${response.status} ${response.statusText}`);
       
       const allProducts = await response.json();
+      if (!Array.isArray(allProducts)) throw new Error("Products data is not in expected format");
 
-      if (!Array.isArray(allProducts)) {
-        throw new Error("Products data is not in expected format");
-      }
-
-      // Match cart items with product details from API
       const enrichedCartItems = cartItems
         .map(cartItem => {
           const productDetails = allProducts.find(product => product._id === cartItem._id);
@@ -204,14 +204,10 @@ export const ShopProvider = ({ children }) => {
             console.warn(`Product with ID ${cartItem._id} not found in products list`);
             return null;
           }
-          return {
-            ...productDetails,
-            qty: parseInt(cartItem.qty) || 1,
-          };
+          return { ...productDetails, qty: parseInt(cartItem.qty) || 1 };
         })
         .filter(item => item !== null);
 
-      // Update cart with enriched data
       if (enrichedCartItems.length !== cartItems.length) {
         setCartItems(enrichedCartItems.map(item => ({
           _id: item._id,
@@ -240,24 +236,25 @@ export const ShopProvider = ({ children }) => {
     cartCount,
     loading,
     error,
-    
+    backendUrl,      // ✅ make backend URL available everywhere
+
     // Actions
     addToCart,
     removeFromCart,
     updateQuantity,
     clearCart,
-    
+
     // Getters
     getCartTotal,
     getItemCount,
     isInCart,
     getCartItem,
-    
-    // Enhanced functionality
+
+    // API
     loadCartItemsWithAPI,
     initializeCart,
-    
-    // Clear error
+
+    // Helpers
     clearError: () => setError(null)
   };
 
@@ -268,5 +265,4 @@ export const ShopProvider = ({ children }) => {
   );
 };
 
-// Default export
 export default ShopContext;

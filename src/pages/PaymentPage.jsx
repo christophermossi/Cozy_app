@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Menu, X, Users, LogOut, CreditCard, Calendar, Lock, Package, ShoppingCart } from "lucide-react";
-import { useShop } from "../context/ShopContext";
 import "./PaymentPage.css";
 
 const PaymentPage = ({ user, onLogout }) => {
-  const { cartItems, getCartTotal, clearCart } = useShop();
   const navigate = useNavigate();
   const [checkoutInfo, setCheckoutInfo] = useState({});
+  const [cartItems, setCartItems] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
@@ -19,8 +18,15 @@ const PaymentPage = ({ user, onLogout }) => {
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   useEffect(() => {
+    // Add the new URL logic
+    const fullUrl = new URL(window.location);
+    const url = `http://${fullUrl.searchParams.get('ip')}:3000`;
+    window.history.pushState({}, '', fullUrl);
+    
     const storedCheckout = JSON.parse(localStorage.getItem("checkoutInfo")) || {};
+    const storedCart = JSON.parse(localStorage.getItem("cartItems")) || [];
     setCheckoutInfo(storedCheckout);
+    setCartItems(storedCart);
 
     if (user && user.name) {
       setCardName(user.name);
@@ -31,7 +37,10 @@ const PaymentPage = ({ user, onLogout }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [user]);
 
-  const totalPrice = getCartTotal();
+  const totalPrice = cartItems.reduce((acc, item) => {
+    const priceNum = parseFloat(item.Price.replace(/[^0-9.]/g, "")) || 0;
+    return acc + priceNum * (item.qty || 1);
+  }, 0);
 
   // Format card number with spaces
   const formatCardNumber = (value) => {
@@ -111,7 +120,8 @@ const PaymentPage = ({ user, onLogout }) => {
   };
 
   const handleOrderConfirm = () => {
-    clearCart();
+    localStorage.removeItem("cartItems");
+    localStorage.removeItem("cartCount");
     localStorage.removeItem("checkoutInfo");
     setShowModal(false);
     navigate("/order");
@@ -395,19 +405,10 @@ const PaymentPage = ({ user, onLogout }) => {
       <footer className="footer">
         <h4>Office.Com</h4>
         <p>© {new Date().getFullYear()} Office.Com. All rights reserved.</p>
-        <div style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "2rem",
-          marginTop: "1rem",
-          flexWrap: "wrap",
-          
-        }}>
-          <Link to="/">Home</Link>
-          <Link to="/productpage">Products</Link>
-          <Link to="/cart">Cart</Link>
+        <p>
+          <Link to="/">Home</Link> | <Link to="/products">Products</Link> |{" "}
           <Link to="/contact">Contact</Link>
-        </div>
+        </p>
       </footer>
     </div>
   );

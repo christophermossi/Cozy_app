@@ -1,18 +1,16 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { useShop } from "../context/ShopContext"; // import context
 import "./SignUp.css";
 
-
 const SignUp = () => {
+  const { backendUrl } = useShop(); // get backend URL from context
   const [formData, setFormData] = useState({
     UserID: "",
     Password: "",
     Email: ""
   });
-
-  const [darkMode, setDarkMode] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -21,10 +19,16 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!backendUrl) {
+      alert("Backend URL not configured. Please try again later.");
+      return;
+    }
+
     try {
-      const response = await fetch("${import.meta.env.VITE_ELASTIC_IP}/signup", {
+      const response = await fetch(`${backendUrl}/signup`, {
         method: "POST",
-        headers: { "Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
@@ -33,14 +37,14 @@ const SignUp = () => {
       if (response.status === 201) {
         alert("Account created successfully!");
         navigate("/login");
-        
+      } else {
+        alert("Signup failed: " + (data.message || "Unknown error"));
       }
     } catch (error) {
-      alert("Signup failed: " + (error.response?.data?.message || error.message));
+      alert("Signup failed: " + (error.message || "Unknown error"));
     }
   };
 
- 
   return (
     <div className="signup-container">
       <form className="signup-form" onSubmit={handleSubmit}>
@@ -72,16 +76,13 @@ const SignUp = () => {
         />
 
         <button type="submit">Sign Up</button>
-        
-     <p className="login-message">
-      Do already have an account?{" "}
-      <Link to="/login" className="login-link">
-        Login
-      </Link>
-    </p>
-           
-      
-       
+
+        <p className="login-message">
+          Do already have an account?{" "}
+          <Link to="/login" className="login-link">
+            Login
+          </Link>
+        </p>
       </form>
     </div>
   );

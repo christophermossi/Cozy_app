@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Menu, X, Users, LogOut } from "lucide-react";
-import { useShop } from "../context/ShopContext";
-import LoginModal from "./LoginModal";
-import SignUpModal from "./SignUpModal";
+import axios from "axios";
 import "./CheckoutPage.css";
 
 const CheckoutPage = ({ user, onLogout }) => {
-  const { cartItems, getCartTotal } = useShop();
+  const [cartItems, setCartItems] = useState([]);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
@@ -16,18 +14,35 @@ const CheckoutPage = ({ user, onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showSignUpModal, setShowSignUpModal] = useState(false);
   const [errors, setErrors] = useState({
     fullName: false,
     email: false,
     address: false,
     location: false,
   });
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showSignUpModal, setShowSignUpModal] = useState(false);
+  const [loginFormData, setLoginFormData] = useState({
+    Email: "",
+    Password: "",
+  });
+  const [signUpFormData, setSignUpFormData] = useState({
+    UserID: "",
+    Password: "",
+    Email: ""
+  });
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Add the new URL logic
+    const fullUrl = new URL(window.location);
+    const url = `http://${fullUrl.searchParams.get('ip')}:3000`;
+    window.history.pushState({}, '', fullUrl);
+    
+    const storedCart = JSON.parse(localStorage.getItem("cartItems")) || [];
+    setCartItems(storedCart);
+
     // Pre-fill user data if available
     if (user) {
       setFullName(user.name || "");
@@ -39,7 +54,10 @@ const CheckoutPage = ({ user, onLogout }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [user]);
 
-  const totalPrice = getCartTotal();
+  const totalPrice = cartItems.reduce((acc, item) => {
+    const priceNum = parseFloat(item.Price.replace(/[^0-9.]/g, "")) || 0;
+    return acc + priceNum * (item.qty || 1);
+  }, 0);
 
   const handleCheckout = () => {
     if (!user) {
@@ -67,6 +85,41 @@ const CheckoutPage = ({ user, onLogout }) => {
     setShowSuccess(true);
   };
 
+  const handleLoginChange = (e) => {
+    setLoginFormData({ ...loginFormData, [e.target.name]: e.target.value });
+  };
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`http://${fullUrl.searchParams.get('ip')}:3000`, loginFormData);
+
+      alert("Login successful!");
+      
+      // Store authentication status
+      localStorage.setItem("authenticated", "true");
+      
+      // Store user data
+      const userData = {
+        email: loginFormData.Email,
+        name: response.data?.UserID || loginFormData.Email.split('@')[0] || 'User'
+      };
+      
+      localStorage.setItem("user", JSON.stringify(userData));
+      
+      // Close modal and refresh page to update user state
+      setShowLoginModal(false);
+      window.location.reload();
+
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        alert("Login failed: Invalid email or password");
+      } else {
+        alert("Login failed: " + (error.response?.data?.message || error.message));
+      }
+    }
+  };
+
   const handleTrackDelivery = () => {
     setShowSuccess(false);
     navigate("/payment");
@@ -75,20 +128,6 @@ const CheckoutPage = ({ user, onLogout }) => {
   const handleLogout = () => {
     onLogout();
     setShowUserMenu(false);
-  };
-
-  const handleLoginSuccess = (userData) => {
-    window.location.reload();
-  };
-
-  const handleSwitchToSignUp = () => {
-    setShowLoginModal(false);
-    setShowSignUpModal(true);
-  };
-
-  const handleSwitchToLogin = () => {
-    setShowSignUpModal(false);
-    setShowLoginModal(true);
   };
 
   return (
@@ -257,13 +296,9 @@ const CheckoutPage = ({ user, onLogout }) => {
               )}
             </div>
           ) : (
-            <button 
-              onClick={() => setShowLoginModal(true)} 
-              style={{ color: "#2563eb" }} 
-              title="Login"
-            >
+            <Link to="/login" style={{ color: "#2563eb" }} title="Login">
               <Users size={20} />
-            </button>
+            </Link>
           )}
 
           <button
@@ -348,22 +383,22 @@ const CheckoutPage = ({ user, onLogout }) => {
               </button>
             </div>
           ) : (
-            <button
-              onClick={() => setShowLoginModal(true)}
-              style={{
-                background: "#2563eb",
-                color: "white",
-                padding: "0.75rem 2rem",
-                borderRadius: "8px",
-                fontWeight: "bold",
-                border: "none",
-                cursor: "pointer",
-                width: "100%",
-                marginTop: "0.5rem"
-              }}
-            >
-              Login
-            </button>
+            <Link to="/login" style={{ marginTop: "0.5rem" }}>
+              <button
+                style={{
+                  background: "#2563eb",
+                  color: "white",
+                  padding: "0.75rem 2rem",
+                  borderRadius: "8px",
+                  fontWeight: "bold",
+                  border: "none",
+                  cursor: "pointer",
+                  width: "100%",
+                }}
+              >
+                Login
+              </button>
+            </Link>
           )}
         </div>
       )}
@@ -459,25 +494,6 @@ const CheckoutPage = ({ user, onLogout }) => {
           <Link to="/contact">Contact</Link>
         </p>
       </footer>
-
-      {/* Login Modal */}
-      <LoginModal
-        isOpen={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-        onSwitchToSignUp={handleSwitchToSignUp}
-        onLoginSuccess={handleLoginSuccess}
-      />
-
-      {/* SignUp Modal */}
-      <SignUpModal
-        isOpen={showSignUpModal}
-        onClose={() => setShowSignUpModal(false)}
-        onSwitchToLogin={handleSwitchToLogin}
-        onSignUpSuccess={() => {
-          setShowSignUpModal(false);
-          setShowLoginModal(true);
-        }}
-      />
     </div>
   );
 };

@@ -1,16 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useShop } from "../context/ShopContext"; // import context
 import "../Login/Login.css";
 
-
 const Login = () => {
-  const [formData, setFormData] = useState({
-    Email: "",
-    Password: "",
-  });
-
+  const { backendUrl } = useShop(); // get backend URL from context
+  const [formData, setFormData] = useState({ Email: "", Password: "" });
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -19,30 +15,30 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!backendUrl) {
+      alert("Backend URL not configured. Please try again later.");
+      return;
+    }
+
     try {
-      console.log("VITE_ELASTIC_IP:", import.meta.env.VITE_ELASTIC_IP);
-      axios.post(`${import.meta.env.VITE_API_BASE}/login`, formData);
+      const response = await axios.post(`${backendUrl}/login`, formData);
 
       alert("Login successful!");
-      
+
       // Store authentication status
       localStorage.setItem("authenticated", "true");
-      
-      // Store user data - assuming the response contains user info
-      // If your backend doesn't return user data, we'll extract from email or use a default
+
+      // Store user data
       const userData = {
         email: formData.Email,
-        // If your backend returns user data, use: name: response.data.UserID || response.data.name
-        // For now, we'll extract from email or use email as name
-        name: response.data?.UserID || formData.Email.split('@')[0] || 'User'
+        name: response.data?.UserID || formData.Email.split("@")[0] || "User",
       };
-      
       localStorage.setItem("user", JSON.stringify(userData));
-      
-      navigate("/");
 
+      navigate("/payment");
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error.response?.status === 401) {
         alert("Login failed: Invalid email or password");
       } else {
         alert("Signin failed: " + (error.response?.data?.message || error.message));
