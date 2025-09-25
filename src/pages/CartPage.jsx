@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Menu, X, Users, LogOut } from "lucide-react";
 import { useShop } from "../context/ShopContext";
+import { useIp } from "../context/IpContext";
 import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
 import "./CartPage.css";
@@ -17,6 +18,7 @@ const Cart = ({ user, onLogout }) => {
     loading: cartLoading,
     error: cartError
   } = useShop();
+  const { callBackend } = useIp(); // Use IpContext for backend calls
   
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -26,22 +28,29 @@ const Cart = ({ user, onLogout }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Add the new URL logic
-  const OrderPage = () => {
-  const { backendUrl } = useShop();
+    const fetchCartItems = async () => {
+      try {
+        const data = await callBackend("/cart"); // Use IpContext to fetch cart items
+        if (!data) throw new Error("Failed to load cart items");
+        // Assuming loadCartItemsWithAPI updates the ShopContext with the fetched data
+        loadCartItemsWithAPI(data);
+      } catch (err) {
+        console.error("Error fetching cart items:", err);
+      }
+    };
 
-  useEffect(() => {
-    if (!backendUrl) return;
-    fetch(`${backendUrl}/api/orders`)
-      .then(res => res.json())
-      .then(data => console.log("Orders:", data))
-      .catch(err => console.error("Error:", err));
-  }, [backendUrl]);
-};
+    const fetchOrders = async () => {
+      try {
+        const data = await callBackend("/api/orders"); // Fetch orders using IpContext
+        console.log("Orders:", data);
+      } catch (err) {
+        console.error("Error fetching orders:", err);
+      }
+    };
 
-    
-    loadCartItemsWithAPI();
-  }, []);
+    fetchCartItems();
+    fetchOrders();
+  }, [callBackend, loadCartItemsWithAPI]);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);

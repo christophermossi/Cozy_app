@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Menu, X, Users, LogOut } from "lucide-react";
-import axios from "axios";
+import { useIp } from "../context/IpContext"; // Import IpContext
 import "./CheckoutPage.css";
 
 const CheckoutPage = ({ user, onLogout }) => {
+  const { callBackend } = useIp(); // Use IpContext for backend calls
   const [cartItems, setCartItems] = useState([]);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -35,11 +36,6 @@ const CheckoutPage = ({ user, onLogout }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Add the new URL logic
-    const fullUrl = new URL(window.location);
-    const url = `http://${fullUrl.searchParams.get('ip')}:3000`;
-    window.history.pushState({}, '', fullUrl);
-    
     const storedCart = JSON.parse(localStorage.getItem("cartItems")) || [];
     setCartItems(storedCart);
 
@@ -92,7 +88,14 @@ const CheckoutPage = ({ user, onLogout }) => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`http://${fullUrl.searchParams.get('ip')}:3000`, loginFormData);
+      const data = await callBackend("/login", {
+        method: "POST",
+        body: loginFormData
+      });
+
+      if (!data) {
+        throw new Error("Login failed");
+      }
 
       alert("Login successful!");
       
@@ -102,7 +105,7 @@ const CheckoutPage = ({ user, onLogout }) => {
       // Store user data
       const userData = {
         email: loginFormData.Email,
-        name: response.data?.UserID || loginFormData.Email.split('@')[0] || 'User'
+        name: data?.UserID || loginFormData.Email.split('@')[0] || 'User'
       };
       
       localStorage.setItem("user", JSON.stringify(userData));
@@ -110,12 +113,39 @@ const CheckoutPage = ({ user, onLogout }) => {
       // Close modal and refresh page to update user state
       setShowLoginModal(false);
       window.location.reload();
-
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error.message.includes("401")) {
         alert("Login failed: Invalid email or password");
       } else {
-        alert("Login failed: " + (error.response?.data?.message || error.message));
+        alert("Login failed: " + (error.message || "Unknown error"));
+      }
+    }
+  };
+
+  const handleSignUpChange = (e) => {
+    setSignUpFormData({ ...signUpFormData, [e.target.name]: e.target.value });
+  };
+
+  const handleSignUpSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const data = await callBackend("/signup", {
+        method: "POST",
+        body: signUpFormData
+      });
+
+      if (!data) {
+        throw new Error("Signup failed");
+      }
+
+      alert("Account created successfully!");
+      setShowSignUpModal(false);
+      setShowLoginModal(true);
+    } catch (error) {
+      if (error.message.includes("400") || error.message.includes("409")) {
+        alert("Signup failed: Invalid data or user already exists");
+      } else {
+        alert("Signup failed: " + (error.message || "Unknown error"));
       }
     }
   };
@@ -455,6 +485,110 @@ const CheckoutPage = ({ user, onLogout }) => {
           <button onClick={handleCheckout}>Proceed to Checkout</button>
         </div>
 
+        {/* Login Modal */}
+        {showLoginModal && (
+          <div className="modal-overlay">
+            <div className="modal">
+              <h2>Login to Account</h2>
+              <form onSubmit={handleLoginSubmit}>
+                <input
+                  type="email"
+                  name="Email"
+                  placeholder="Email Address"
+                  value={loginFormData.Email}
+                  onChange={handleLoginChange}
+                  required
+                />
+                <input
+                  type="password"
+                  name="Password"
+                  placeholder="Password"
+                  value={loginFormData.Password}
+                  onChange={handleLoginChange}
+                  required
+                />
+                <button type="submit">Sign In</button>
+                <p>
+                  Don't have an account?{" "}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowLoginModal(false);
+                      setShowSignUpModal(true);
+                    }}
+                    style={{ background: "none", border: "none", color: "#2563eb", cursor: "pointer" }}
+                  >
+                    Sign Up
+                  </button>
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setShowLoginModal(false)}
+                  style={{ background: "#f3f4f6", color: "#374151", marginTop: "1rem" }}
+                >
+                  Close
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* SignUp Modal */}
+        {showSignUpModal && (
+          <div className="modal-overlay">
+            <div className="modal">
+              <h2>Create Account</h2>
+              <form onSubmit={handleSignUpSubmit}>
+                <input
+                  type="text"
+                  name="UserID"
+                  placeholder="User Name"
+                  value={signUpFormData.UserID}
+                  onChange={handleSignUpChange}
+                  required
+                />
+                <input
+                  type="password"
+                  name="Password"
+                  placeholder="Password"
+                  value={signUpFormData.Password}
+                  onChange={handleSignUpChange}
+                  required
+                />
+                <input
+                  type="email"
+                  name="Email"
+                  placeholder="Email Address"
+                  value={signUpFormData.Email}
+                  onChange={handleSignUpChange}
+                  required
+                />
+                <button type="submit">Sign Up</button>
+                <p>
+                  Already have an account?{" "}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowSignUpModal(false);
+                      setShowLoginModal(true);
+                    }}
+                    style={{ background: "none", border: "none", color: "#2563eb", cursor: "pointer" }}
+                  >
+                    Login
+                  </button>
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setShowSignUpModal(false)}
+                  style={{ background: "#f3f4f6", color: "#374151", marginTop: "1rem" }}
+                >
+                  Close
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+
         {/* Success Modal */}
         {showSuccess && (
           <div className="modal-overlay">
@@ -490,7 +624,7 @@ const CheckoutPage = ({ user, onLogout }) => {
         <h4>Office.Com</h4>
         <p>© {new Date().getFullYear()} Office.Com. All rights reserved.</p>
         <p>
-          <Link to="/">Home</Link> | <Link to="/products">Products</Link> |{" "}
+          <Link to="/">Home</Link> | <Link to="/productpage">Products</Link> |{" "}
           <Link to="/contact">Contact</Link>
         </p>
       </footer>

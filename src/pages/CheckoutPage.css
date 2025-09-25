@@ -439,3 +439,272 @@
   background: #d1d5db;
 }
 
+/* CheckoutPage.css */
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* Semi-transparent dark overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Modal Content */
+.modal {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  animation: scaleIn 0.3s ease-in-out;
+}
+
+/* Modal Heading */
+.modal h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 1.5rem;
+}
+
+/* Success Modal Heading */
+.modal h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
+/* Modal Paragraphs */
+.modal p {
+  font-size: 1rem;
+  color: #4b5563;
+  margin-bottom: 1rem;
+}
+
+/* Modal Form */
+.modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Modal Inputs */
+.modal input {
+  padding: 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #374151;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modal input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Error State for Inputs */
+.modal input[style*="border: 1px solid red"] {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Modal Buttons */
+.modal button[type="submit"],
+.modal button:not([type="button"]) {
+  background: #2563eb;
+  color: #ffffff;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.modal button[type="submit"]:hover,
+.modal button:not([type="button"]):hover {
+  background: #1d4ed8;
+}
+
+/* Close Button and Secondary Buttons */
+.modal button[type="button"] {
+  background: #f3f4f6;
+  color: #374151;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.modal button[type="button"]:hover {
+  background: #e5e7eb;
+}
+
+/* Sign Up/Login Toggle Button */
+.modal button[style*="background: none"] {
+  color: #2563eb;
+  font-weight: 500;
+  padding: 0;
+  margin: 0;
+}
+
+.modal button[style*="background: none"]:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+/* Success Modal Specific Styles */
+.modal ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  text-align: left;
+}
+
+.modal ul li {
+  font-size: 0.95rem;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+.modal h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 1rem 0 0.5rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .modal {
+    max-width: 95%;
+    padding: 1.5rem;
+  }
+
+  .modal h2 {
+    font-size: 1.25rem;
+  }
+
+  .modal h1 {
+    font-size: 1.5rem;
+  }
+
+  .modal input,
+  .modal button {
+    font-size: 0.9rem;
+    padding: 0.65rem;
+  }
+}
+
+/* Existing styles for checkout form and summary (if any) would go here */
+.checkout-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.checkout-form {
+  flex: 1;
+  margin-right: 2rem;
+}
+
+.checkout-form h2 {
+  font-size: 1.5rem;
+  color: #374151;
+  margin-bottom: 1.5rem;
+}
+
+.checkout-form input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.checkout-form input[style*="border: 1px solid red"] {
+  border-color: #ef4444;
+}
+
+.checkout-summary {
+  flex: 1;
+  background: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.checkout-summary h3 {
+  font-size: 1.25rem;
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
+.checkout-summary ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.checkout-summary li {
+  font-size: 1rem;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+.checkout-summary button {
+  background: #2563eb;
+  color: #ffffff;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: none;
+  width: 100%;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.checkout-summary button:hover {
+  background: #1d4ed8;
+}
+
+
+

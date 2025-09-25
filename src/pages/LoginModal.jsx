@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
-
+import { useIp } from "../context/IpContext"; // Import IpContext
 import "./LoginModal.css";
 
 const LoginModal = ({ isOpen, onClose, onSwitchToSignUp, onLoginSuccess }) => {
+  const { callBackend } = useIp(); // Use IpContext for backend calls
   const [formData, setFormData] = useState({
     Email: "",
     Password: "",
@@ -16,8 +16,14 @@ const LoginModal = ({ isOpen, onClose, onSwitchToSignUp, onLoginSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${import.meta.env.VITE_ELASTIC_IP}/login`, formData);
-      
+      const data = await callBackend("/login", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!data) {
+        throw new Error("Login failed");
+      }
 
       alert("Login successful!");
       
@@ -25,7 +31,7 @@ const LoginModal = ({ isOpen, onClose, onSwitchToSignUp, onLoginSuccess }) => {
       
       const userData = {
         email: formData.Email,
-        name: response.data?.UserID || formData.Email.split('@')[0] || 'User'
+        name: data.UserID || formData.Email.split('@')[0] || 'User'
       };
       
       localStorage.setItem("user", JSON.stringify(userData));
@@ -36,12 +42,11 @@ const LoginModal = ({ isOpen, onClose, onSwitchToSignUp, onLoginSuccess }) => {
       } else {
         window.location.reload();
       }
-
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error.message.includes("401")) {
         alert("Login failed: Invalid email or password");
       } else {
-        alert("Login failed: " + (error.response?.data?.message || error.message));
+        alert("Login failed: " + (error.message || "Unknown error"));
       }
     }
   };

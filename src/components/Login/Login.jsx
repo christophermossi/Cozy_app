@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useShop } from "../context/ShopContext"; // import context
+import { useIp } from "../context/IpContext"; // Import IpContext
 import "../Login/Login.css";
 
 const Login = () => {
-  const { backendUrl } = useShop(); // get backend URL from context
+  const { callBackend } = useIp(); // Use IpContext for backend calls
   const [formData, setFormData] = useState({ Email: "", Password: "" });
   const navigate = useNavigate();
 
@@ -16,13 +15,15 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!backendUrl) {
-      alert("Backend URL not configured. Please try again later.");
-      return;
-    }
-
     try {
-      const response = await axios.post(`${backendUrl}/login`, formData);
+      const data = await callBackend("/login", { 
+        method: "POST", 
+        body: formData 
+      });
+
+      if (!data) {
+        throw new Error("Login failed");
+      }
 
       alert("Login successful!");
 
@@ -32,16 +33,16 @@ const Login = () => {
       // Store user data
       const userData = {
         email: formData.Email,
-        name: response.data?.UserID || formData.Email.split("@")[0] || "User",
+        name: data?.UserID || formData.Email.split("@")[0] || "User",
       };
       localStorage.setItem("user", JSON.stringify(userData));
 
       navigate("/payment");
     } catch (error) {
-      if (error.response?.status === 401) {
+      if (error.message.includes("401") || error.message.includes("Invalid")) {
         alert("Login failed: Invalid email or password");
       } else {
-        alert("Signin failed: " + (error.response?.data?.message || error.message));
+        alert("Signin failed: " + (error.message || "Unknown error"));
       }
     }
   };

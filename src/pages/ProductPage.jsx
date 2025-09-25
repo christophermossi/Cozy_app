@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, Users, LogOut } from "lucide-react";
-import { useShop } from "../context/ShopContext";
+import { useIp } from "../context/IpContext"; // Import IpContext
+import { useShop } from "../context/ShopContext"; // Import ShopContext
 import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
 import "./ProductPage.css";
 
 const Products = ({ user, onLogout }) => {
-  const { cartCount, addToCart, error: cartError, backendUrl } = useShop();
+  const { callBackend } = useIp(); // Use IpContext to get callBackend
+  const { cartCount, addToCart, error: cartError } = useShop(); // Use ShopContext for cart functionality
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,18 +18,13 @@ const Products = ({ user, onLogout }) => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
 
-  // Fetch products safely
+  // Fetch products using IpContext's callBackend
   useEffect(() => {
     const fetchProducts = async () => {
-      if (!backendUrl) {
-        setLoading(false);
-        return;
-      }
       try {
         setLoading(true);
-        const response = await fetch(`${backendUrl}/products`);
-        if (!response.ok) throw new Error("Failed to fetch products");
-        const data = await response.json();
+        const data = await callBackend("/products"); // Use callBackend from IpContext
+        if (!data) throw new Error("Failed to fetch products");
         setProducts(data);
       } catch (err) {
         console.error("Error fetching products:", err);
@@ -36,9 +33,11 @@ const Products = ({ user, onLogout }) => {
         setLoading(false);
       }
     };
+    
+    
 
     fetchProducts();
-  }, [backendUrl]);
+  }, [callBackend]);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -204,8 +203,8 @@ const Products = ({ user, onLogout }) => {
       </h1>
 
       {/* Loading/Error */}
-      {loading && <p>Loading products...</p>}
-      {error && <p style={{ color: "red" }}>Error: {error}</p>}
+    
+      
 
       {/* Products Grid */}
       <div style={styles.grid}>
@@ -222,7 +221,14 @@ const Products = ({ user, onLogout }) => {
         ))}
       </div>
 
-      <footer style={footerStyles}>{/* Keep footer JSX here */}</footer>
+      <footer style={footerStyles}>
+        <h4>Office.Com</h4>
+        <p>© {new Date().getFullYear()} Office.Com. All rights reserved.</p>
+        <p>
+          <Link to="/">Home</Link> | <Link to="/productpage">Products</Link> |{" "}
+          <Link to="/contact">Contact</Link>
+        </p>
+      </footer>
 
       <LoginModal
         isOpen={showLoginModal}

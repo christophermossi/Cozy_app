@@ -34,6 +34,8 @@ const Homepage = ({ user, onLogout }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const scrollToSection = (sectionId) => {
@@ -79,7 +81,7 @@ const Homepage = ({ user, onLogout }) => {
 
               {/* Desktop Menu */}
               <div className="menu-desktop">
-                {["Home", "Products", "Services", "About", "Contact Us"].map(
+                {["Home", "Products", "Services", "About", "Contact"].map(
                   (item) => (
                     <button
                       key={item}

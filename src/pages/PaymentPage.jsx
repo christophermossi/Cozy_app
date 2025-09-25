@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Menu, X, Users, LogOut, CreditCard, Calendar, Lock, Package, ShoppingCart } from "lucide-react";
+import { useIp } from "../context/IpContext"; // Import IpContext
 import "./PaymentPage.css";
 
 const PaymentPage = ({ user, onLogout }) => {
+  const { callBackend } = useIp(); // Include IpContext for consistency
   const navigate = useNavigate();
   const [checkoutInfo, setCheckoutInfo] = useState({});
   const [cartItems, setCartItems] = useState([]);
@@ -18,11 +20,6 @@ const PaymentPage = ({ user, onLogout }) => {
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   useEffect(() => {
-    // Add the new URL logic
-    const fullUrl = new URL(window.location);
-    const url = `http://${fullUrl.searchParams.get('ip')}:3000`;
-    window.history.pushState({}, '', fullUrl);
-    
     const storedCheckout = JSON.parse(localStorage.getItem("checkoutInfo")) || {};
     const storedCart = JSON.parse(localStorage.getItem("cartItems")) || [];
     setCheckoutInfo(storedCheckout);
@@ -406,7 +403,7 @@ const PaymentPage = ({ user, onLogout }) => {
         <h4>Office.Com</h4>
         <p>© {new Date().getFullYear()} Office.Com. All rights reserved.</p>
         <p>
-          <Link to="/">Home</Link> | <Link to="/products">Products</Link> |{" "}
+          <Link to="/">Home</Link> | <Link to="/productpage">Products</Link> |{" "}
           <Link to="/contact">Contact</Link>
         </p>
       </footer>

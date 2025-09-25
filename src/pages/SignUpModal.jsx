@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import.meta.env.VITE_ELASTIC_IP 
+import { useIp } from "../context/IpContext"; // Import IpContext
 import "./LoginModal.css";
 
 const SignUpModal = ({ isOpen, onClose, onSwitchToLogin, onSignUpSuccess }) => {
+  const { callBackend } = useIp(); // Use IpContext for backend calls
   const [formData, setFormData] = useState({
     UserID: "",
     Password: "",
-    Email: ""
+    Email: "",
   });
 
   const handleChange = (e) => {
@@ -16,23 +17,26 @@ const SignUpModal = ({ isOpen, onClose, onSwitchToLogin, onSignUpSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${import.meta.env.VITE_ELASTIC_IP}/signup`, {
+      const data = await callBackend("/signup", {
         method: "POST",
-        headers: { "Content-Type": "application/json"},
-        body: JSON.stringify(formData),
+        body: formData,
       });
 
-      const data = await response.json();
+      if (!data) {
+        throw new Error("Signup failed");
+      }
 
-      if (response.status === 201) {
-        alert("Account created successfully!");
-        onClose();
-        if (onSignUpSuccess) {
-          onSignUpSuccess();
-        }
+      alert("Account created successfully!");
+      onClose();
+      if (onSignUpSuccess) {
+        onSignUpSuccess();
       }
     } catch (error) {
-      alert("Signup failed: " + (error.response?.data?.message || error.message));
+      if (error.message.includes("400") || error.message.includes("409")) {
+        alert("Signup failed: Invalid data or user already exists");
+      } else {
+        alert("Signup failed: " + (error.message || "Unknown error"));
+      }
     }
   };
 
@@ -83,7 +87,7 @@ const SignUpModal = ({ isOpen, onClose, onSwitchToLogin, onSignUpSuccess }) => {
           />
 
           <button type="submit">Sign Up</button>
-          
+
           <p className="login-message">
             Already have an account?{" "}
             <button

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { IpProvider } from './context/IpContext';
 import { ShopProvider } from './context/ShopContext';
 import Homepage from './pages/HomePage';
 import Products from './pages/ProductPage';
@@ -29,20 +30,22 @@ function App() {
   };
 
   return (
-    <ShopProvider>
-      <Router>
-        <div className="App">
-          <Routes>
-            <Route path="/" element={<Homepage user={user} onLogout={handleLogout} />} />
-            <Route path="/productpage" element={<Products user={user} onLogout={handleLogout} />} />
-            <Route path="/cart" element={<Cart user={user} onLogout={handleLogout} />} />
-            <Route path="/checkout" element={<CheckoutPage user={user} onLogout={handleLogout} />} />
-            <Route path="/payment" element={<PaymentPage user={user} onLogout={handleLogout} />} />
-            <Route path="/order" element={<OrderPage user={user} onLogout={handleLogout} />} />
-          </Routes>
-        </div>
-      </Router>
-    </ShopProvider>
+    <IpProvider>
+      <ShopProvider>
+        <Router>
+          <div className="App">
+            <Routes>
+              <Route path="/" element={<Homepage user={user} onLogout={handleLogout} />} />
+              <Route path="/productpage" element={<Products user={user} onLogout={handleLogout} />} />
+              <Route path="/cart" element={<Cart user={user} onLogout={handleLogout} />} />
+              <Route path="/checkout" element={<CheckoutPage user={user} onLogout={handleLogout} />} />
+              <Route path="/payment" element={<PaymentPage user={user} onLogout={handleLogout} />} />
+              <Route path="/order" element={<OrderPage user={user} onLogout={handleLogout} />} />
+            </Routes>
+          </div>
+        </Router>
+      </ShopProvider>
+    </IpProvider>
   );
 }
 

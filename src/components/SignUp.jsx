@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
-import { useShop } from "../context/ShopContext"; // import context
+import { useIp } from "../context/IpContext"; // Import IpContext
 import "./SignUp.css";
 
 const SignUp = () => {
-  const { backendUrl } = useShop(); // get backend URL from context
+  const { callBackend } = useIp(); // Use IpContext for backend calls
   const [formData, setFormData] = useState({
     UserID: "",
     Password: "",
@@ -20,28 +19,24 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!backendUrl) {
-      alert("Backend URL not configured. Please try again later.");
-      return;
-    }
-
     try {
-      const response = await fetch(`${backendUrl}/signup`, {
+      const data = await callBackend("/signup", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: formData
       });
 
-      const data = await response.json();
-
-      if (response.status === 201) {
-        alert("Account created successfully!");
-        navigate("/login");
-      } else {
-        alert("Signup failed: " + (data.message || "Unknown error"));
+      if (!data) {
+        throw new Error("Signup failed");
       }
+
+      alert("Account created successfully!");
+      navigate("/login");
     } catch (error) {
-      alert("Signup failed: " + (error.message || "Unknown error"));
+      if (error.message.includes("400") || error.message.includes("409")) {
+        alert("Signup failed: Invalid data or user already exists");
+      } else {
+        alert("Signup failed: " + (error.message || "Unknown error"));
+      }
     }
   };
 

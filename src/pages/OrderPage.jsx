@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Menu, X, Users, LogOut, Package, CheckCircle, Truck, Clock } from "lucide-react";
 import { useShop } from "../context/ShopContext";
+import { useIp } from "../context/IpContext"; // Import IpContext
 import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
 
 const OrderPage = ({ user, onLogout }) => {
+  const { callBackend } = useIp(); // Use IpContext for backend calls
   const { cartItems, getCartTotal, clearCart } = useShop();
   const navigate = useNavigate();
   const [orderInfo, setOrderInfo] = useState({ fullName: "", address: "", location: "" });
@@ -17,16 +19,22 @@ const OrderPage = ({ user, onLogout }) => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
 
-const { apiBaseUrl } = useShop();
-
-useEffect(() => {
-  fetch(`${apiBaseUrl}/Products`)
-    .then(res => res.json())
-    .then(data => console.log(data));
-}, [apiBaseUrl]);
-
-
   useEffect(() => {
+    // Fetch products using IpContext
+    const fetchProducts = async () => {
+      try {
+        const data = await callBackend("/Products");
+        if (data) {
+          console.log(data);
+        } else {
+          console.error("Failed to fetch products: No data received");
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    fetchProducts();
+
     const storedInfo = JSON.parse(localStorage.getItem("orderInfo")) || {};
     setOrderInfo(storedInfo);
 
@@ -49,7 +57,7 @@ useEffect(() => {
       clearInterval(countdown);
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [callBackend]);
 
   const handleLogout = () => {
     onLogout();
@@ -284,10 +292,272 @@ useEffect(() => {
             </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            background: "white",
+            padding: "1rem",
+            position: "absolute",
+            top: "100%",
+            right: 0,
+            width: "200px",
+            borderRadius: "8px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+            zIndex: 1000,
+          }}>
+            {["Home", "Products", "Cart", "Payment", "About", "Contact"].map((item) => (
+              <button
+                key={item}
+                onClick={() => {
+                  if (item === "Home") {
+                    navigate("/");
+                  } else if (item === "Products") {
+                    navigate("/productpage");
+                  } else if (item === "Cart") {
+                    navigate("/cart");
+                  } else if (item === "Payment") {
+                    navigate("/payment");
+                  } else {
+                    const el = document.getElementById(item.toLowerCase());
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }
+                  setIsMenuOpen(false);
+                }}
+                style={{
+                  width: "100%",
+                  padding: "0.5rem 1rem",
+                  textAlign: "left",
+                  border: "none",
+                  background: "none",
+                  color: "#374151",
+                  cursor: "pointer",
+                }}
+              >
+                {item}
+              </button>
+            ))}
+
+            {user ? (
+              <div style={{ padding: "1rem 0", borderTop: "1px solid #e5e7eb" }}>
+                <p style={{ margin: "0 0 0.5rem", fontWeight: "500", fontSize: "0.9rem" }}>
+                  Welcome, {user.name}!
+                </p>
+                <button
+                  onClick={handleLogout}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    background: "#f3f4f6",
+                    border: "1px solid #d1d5db",
+                    padding: "0.5rem 1rem",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    width: "100%",
+                    fontSize: "0.9rem",
+                  }}
+                >
+                  <LogOut size={16} />
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => {
+                  setShowLoginModal(true);
+                  setIsMenuOpen(false);
+                }}
+                style={{
+                  background: "#2563eb",
+                  color: "white",
+                  padding: "0.75rem",
+                  borderRadius: "8px",
+                  fontWeight: "bold",
+                  border: "none",
+                  cursor: "pointer",
+                  width: "100%",
+                  marginTop: "0.5rem",
+                }}
+              >
+                Login
+              </button>
+            )}
+          </div>
+        )}
       </nav>
 
-      {/* The rest of your JSX stays the same */}
-      {/* ... */}
+      {/* Order Content */}
+      <main style={{
+        maxWidth: "1200px",
+        margin: "80px auto 2rem",
+        padding: "1rem",
+        flex: 1,
+      }}>
+        <h1 style={{ fontSize: "2rem", fontWeight: "bold", marginBottom: "1.5rem", color: "#1f2937" }}>
+          Your Order
+        </h1>
+
+        {user ? (
+          <div style={{ background: "white", padding: "2rem", borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
+            <h2 style={{ fontSize: "1.5rem", fontWeight: "600", marginBottom: "1rem", color: "#1f2937" }}>
+              Order Confirmation
+            </h2>
+            <p style={{ marginBottom: "1rem", color: "#4b5563" }}>
+              Thank you, {orderInfo.fullName || user.name}, for your order! Your items are being processed.
+            </p>
+
+            <div style={{ marginBottom: "1.5rem" }}>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "500", marginBottom: "0.5rem", color: "#1f2937" }}>
+                Shipping Information
+              </h3>
+              <p style={{ color: "#4b5563" }}>
+                {orderInfo.address}, {orderInfo.location}
+              </p>
+            </div>
+
+            <div style={{ marginBottom: "1.5rem" }}>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "500", marginBottom: "0.5rem", color: "#1f2937" }}>
+                Order Items
+              </h3>
+              {cartItems.length === 0 ? (
+                <p style={{ color: "#4b5563" }}>No items in your order.</p>
+              ) : (
+                <ul style={{ listStyle: "none", padding: 0 }}>
+                  {cartItems.map((item) => (
+                    <li key={item._id} style={{ 
+                      display: "flex", 
+                      justifyContent: "space-between", 
+                      padding: "0.5rem 0",
+                      borderBottom: "1px solid #e5e7eb",
+                      color: "#4b5563"
+                    }}>
+                      <span>{item.ProductName} x {item.qty || 1}</span>
+                      <span>{item.Price}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div style={{ marginBottom: "1.5rem" }}>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "500", marginBottom: "0.5rem", color: "#1f2937" }}>
+                Total: R {totalPrice.toFixed(2)}
+              </h3>
+            </div>
+
+            <div style={{ marginBottom: "1.5rem" }}>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "500", marginBottom: "0.5rem", color: "#1f2937" }}>
+                Order Status
+              </h3>
+              <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
+                <div style={{ 
+                  width: "100%", 
+                  height: "8px", 
+                  background: "#e5e7eb", 
+                  borderRadius: "4px",
+                  position: "relative"
+                }}>
+                  <div style={{
+                    width: `${progress}%`,
+                    height: "100%",
+                    background: "linear-gradient(90deg, #667eea, #764ba2)",
+                    borderRadius: "4px",
+                    transition: "width 0.3s ease"
+                  }} />
+                </div>
+                <span style={{ color: "#4b5563", fontSize: "0.9rem" }}>
+                  {progress}% Complete
+                </span>
+              </div>
+
+              <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap" }}>
+                {[
+                  { icon: Package, label: "Order Placed", active: progress >= 25 },
+                  { icon: CheckCircle, label: "Processing", active: progress >= 50 },
+                  { icon: Truck, label: "Shipped", active: progress >= 75 },
+                  { icon: Clock, label: "Delivered", active: progress >= 100 },
+                ].map((stage, index) => (
+                  <div key={index} style={{ 
+                    textAlign: "center", 
+                    color: stage.active ? "#2563eb" : "#9ca3af",
+                    flex: "1 1 0",
+                    minWidth: "80px"
+                  }}>
+                    <stage.icon size={24} style={{ marginBottom: "0.5rem" }} />
+                    <p style={{ fontSize: "0.9rem", fontWeight: stage.active ? "500" : "400" }}>
+                      {stage.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "500", marginBottom: "0.5rem", color: "#1f2937" }}>
+                Estimated Delivery
+              </h3>
+              <p style={{ color: "#4b5563" }}>
+                {daysLeft === 0 ? "Arriving today!" : `Arrives in ${daysLeft} day${daysLeft > 1 ? "s" : ""}`}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div style={{ textAlign: "center", padding: "2rem", background: "white", borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
+            <h2 style={{ fontSize: "1.5rem", fontWeight: "600", marginBottom: "1rem", color: "#1f2937" }}>
+              Please Log In
+            </h2>
+            <p style={{ color: "#4b5563", marginBottom: "1rem" }}>
+              You need to be logged in to view your order details.
+            </p>
+            <button
+              onClick={() => setShowLoginModal(true)}
+              style={{
+                background: "#2563eb",
+                color: "white",
+                padding: "0.75rem 2rem",
+                borderRadius: "8px",
+                fontWeight: "bold",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              Login
+            </button>
+          </div>
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer style={{
+        background: "#f9fafb",
+        padding: "2rem",
+        textAlign: "center",
+        borderTop: "1px solid #e5e7eb",
+        marginTop: "auto"
+      }}>
+        <h4 style={{ fontSize: "1.25rem", fontWeight: "600", color: "#1f2937", marginBottom: "0.5rem" }}>
+          Office.Com
+        </h4>
+        <p style={{ color: "#4b5563", marginBottom: "0.5rem" }}>
+          © {new Date().getFullYear()} Office.Com. All rights reserved.
+        </p>
+        <p style={{ color: "#4b5563" }}>
+          <Link to="/" style={{ color: "#2563eb", textDecoration: "none", margin: "0 0.5rem" }}>
+            Home
+          </Link>
+          |
+          <Link to="/productpage" style={{ color: "#2563eb", textDecoration: "none", margin: "0 0.5rem" }}>
+            Products
+          </Link>
+          |
+          <Link to="/contact" style={{ color: "#2563eb", textDecoration: "none", margin: "0 0.5rem" }}>
+            Contact
+          </Link>
+        </p>
+      </footer>
 
       {/* Login Modal */}
       <LoginModal

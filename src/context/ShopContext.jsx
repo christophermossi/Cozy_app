@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'; 
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useIp } from './IpContext'; // Import IpContext
 
 // Create the context
 const ShopContext = createContext();
@@ -14,29 +15,15 @@ export const useShop = () => {
 
 // Provider component
 export const ShopProvider = ({ children }) => {
+  const { callBackend } = useIp(); // Use IpContext for backend calls
   const [cartItems, setCartItems] = useState([]);
   const [cartCount, setCartCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // ✅ NEW: backend URL state
-  const [backendUrl, setBackendUrl] = useState("");
-
-  // Initialize cart & backend URL on mount
+  // Initialize cart on mount
   useEffect(() => {
     initializeCart();
-
-    // ✅ Dynamically set backend URL
-    const fullUrl = new URL(window.location);
-    const ip = fullUrl.searchParams.get("ip");
-
-    if (ip) {
-      setBackendUrl(`http://${ip}:3000`);
-      // Clean the URL (remove ?ip=)
-      window.history.pushState({}, "", fullUrl.origin + fullUrl.pathname);
-    } else {
-      setBackendUrl("http://54.208.79.216:3000"); // fallback to your public IP
-    }
   }, []);
 
   // Update localStorage whenever cartItems changes
@@ -181,7 +168,7 @@ export const ShopProvider = ({ children }) => {
     return cartItems.find(item => item._id === productId);
   };
 
-  const loadCartItemsWithAPI = async () => {
+  const loadCartItemsWithAPI = async (cartData = null) => {
     try {
       setLoading(true);
       setError(null);
@@ -191,10 +178,16 @@ export const ShopProvider = ({ children }) => {
         return [];
       }
 
-      const response = await fetch(`${backendUrl}/Products`);
-      if (!response.ok) throw new Error(`Failed to fetch products: ${response.status} ${response.statusText}`);
-      
-      const allProducts = await response.json();
+      // Use provided cartData if available, otherwise fetch from backend
+      let allProducts;
+      if (cartData) {
+        allProducts = cartData;
+      } else {
+        const data = await callBackend("/Products");
+        if (!data) throw new Error("Failed to fetch products");
+        allProducts = data;
+      }
+
       if (!Array.isArray(allProducts)) throw new Error("Products data is not in expected format");
 
       const enrichedCartItems = cartItems
@@ -236,7 +229,6 @@ export const ShopProvider = ({ children }) => {
     cartCount,
     loading,
     error,
-    backendUrl,      // ✅ make backend URL available everywhere
 
     // Actions
     addToCart,
