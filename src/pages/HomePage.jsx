@@ -145,7 +145,7 @@ const Homepage = ({ user, onLogout }) => {
 
           {/* Mobile Menu */}
           <div className={`menu-mobile ${isMenuOpen ? "open" : "closed"}`}>
-            {["Home", "Products", "Services", "About", "Contact"].map((item) => (
+            {["Pozi", "Products", "Services", "About", "Contact"].map((item) => (
               <button
                 key={item}
                 onClick={() => scrollToSection(item.toLowerCase())}
