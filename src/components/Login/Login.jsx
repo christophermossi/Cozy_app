@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useIp } from "../context/IpContext"; // Import IpContext
-import "../Login/Login.css";
+import "./Login.css";
 
 const Login = () => {
   const { callBackend } = useIp(); // Use IpContext for backend calls
