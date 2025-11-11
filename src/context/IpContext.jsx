@@ -12,7 +12,7 @@ export function IpProvider({ children }) {
     let currentIp = url.searchParams.get("ip");
 
     if (!currentIp) {
-      currentIp = "54.208.79.216"; // Your EC2 public IP
+      currentIp = "52.21.130.176"; // Your EC2 public IP
       url.searchParams.set("ip", currentIp);
       window.history.replaceState({}, "", url);
     }
