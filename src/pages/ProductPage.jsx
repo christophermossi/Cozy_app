@@ -249,15 +249,5 @@ const Products = ({ user, onLogout }) => {
   );
 };
 
-const styles = {
-  grid: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(266px, 1fr))", gap: "1.5rem", padding: "6rem 8rem" },
-  card: { background: "#fff", border: "1px solid #e2e2e2", borderRadius: "15px", padding: "1.5rem", boxShadow: "0 4px 12px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" },
-  title: { fontSize: "1.3rem", fontWeight: "600", marginBottom: "0.5rem", background: "linear-gradient(45deg, #667eea, #764ba2)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", textAlign: "center" },
-  price: { fontSize: "15px", fontWeight: "bold", marginBottom: "0.5rem", color: "#080a5eff", textAlign: "center" },
-  desc: { textAlign: "center", fontSize: "14px", color: "#444", minHeight: "60px", marginBottom: "12px", lineHeight: "1.5" },
-  btn: { width: "100%", padding: "10px 0", background: "linear-gradient(90deg, #667eea, #764ba2)", color: "#fff", border: "none", borderRadius: "9px", fontSize: "16px", fontWeight: "bold", cursor: "pointer", marginTop: "auto" },
-};
-
-const footerStyles = { background: "#1f2937", color: "#f3f4f6", padding: "2rem", marginTop: "2rem" };
 
 export default Products;
