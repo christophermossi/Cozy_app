@@ -23,7 +23,7 @@ const Products = ({ user, onLogout }) => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const data = await callBackend("/products"); // Use callBackend from IpContext
+        const data = await callBackend("/Products"); // Use callBackend from IpContext
         if (!data) throw new Error("Failed to fetch products");
         setProducts(data);
       } catch (err) {
@@ -216,14 +216,15 @@ const Products = ({ user, onLogout }) => {
         ))}
       </div>
 
-      <footer style={footerStyles}>
-        <h4>Office.Com</h4>
-        <p>© {new Date().getFullYear()} Office.Com. All rights reserved.</p>
-        <p>
-          <Link to="/">Home</Link> | <Link to="/productpage">Products</Link> |{" "}
-          <Link to="/contact">Contact</Link>
-        </p>
-      </footer>
+      <footer className="footer">
+  <h4>Office.Com</h4>
+  <p>© {new Date().getFullYear()} Office.Com. All rights reserved.</p>
+  <p>
+    <Link to="/">Home</Link> | <Link to="/productpage">Products</Link> |{" "}
+    <Link to="/contact">Contact</Link>
+  </p>
+</footer>
+
 
       <LoginModal
   isOpen={showLoginModal}
