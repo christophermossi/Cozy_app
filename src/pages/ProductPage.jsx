@@ -37,7 +37,7 @@ const Products = ({ user, onLogout }) => {
     
 
     fetchProducts();
-  }, [callBackend]);
+}, []); // load once
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -46,7 +46,11 @@ const Products = ({ user, onLogout }) => {
     setShowUserMenu(false);
   };
 
-  const handleLoginSuccess = () => window.location.reload();
+ const handleLoginSuccess = (userData) => {
+  localStorage.setItem("user", JSON.stringify(userData));
+  setShowLoginModal(false);
+};
+
   const handleSwitchToSignUp = () => {
     setShowLoginModal(false);
     setShowSignUpModal(true);
@@ -231,11 +235,15 @@ const Products = ({ user, onLogout }) => {
       </footer>
 
       <LoginModal
-        isOpen={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-        onSwitchToSignUp={handleSwitchToSignUp}
-        onLoginSuccess={handleLoginSuccess}
-      />
+  isOpen={showLoginModal}
+  onClose={() => setShowLoginModal(false)}
+  onSwitchToSignUp={handleSwitchToSignUp}
+  onLoginSuccess={(userData) => {
+    localStorage.setItem("user", JSON.stringify(userData));
+    setShowLoginModal(false);
+  }}
+/>
+
       <SignUpModal
         isOpen={showSignUpModal}
         onClose={() => setShowSignUpModal(false)}
