@@ -1,3 +1,17 @@
+/* ================================
+   PRODUCT PAGE – CLEANED + MERGED
+=================================== */
+
+/* Main Title */
+.products-title {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #3d4550ff;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+/* Products Grid */
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -6,6 +20,7 @@
   background: #f8f9fc;
 }
 
+/* Product Card */
 .product-card {
   background: #fff;
   border: 1px solid #e2e2e2;
@@ -19,6 +34,7 @@
   height: 100%;
   overflow: hidden;
   position: relative;
+  text-align: center;
 }
 
 .product-card:hover {
@@ -26,38 +42,13 @@
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
 }
 
-.product-title {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #222;
-  text-align: center;
-}
-
-.product-price {
-  color: #3e45c0ff;
-  font-weight: bold;
-  margin-bottom: 0.7rem;
-  font-size: 1.1rem;
-  text-align: center;
-}
-
-.product-desc {
-  font-size: 0.92rem;
-  color: #555;
-  margin-bottom: 1rem;
-  line-height: 1.4;
-  text-align: center;
-  min-height: 50px;
-}
-
+/* Product Image */
 .imgpart {
   width: 100%;
   max-width: 250px;
   height: 200px;
   object-fit: cover;
-  display: block;
-  margin: 0 auto 1rem auto;
+  margin: 0 auto 1rem;
   border-radius: 10px;
   transition: transform 0.3s ease;
 }
@@ -66,8 +57,33 @@
   transform: scale(1.05);
 }
 
+/* Product Title */
+.product-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.5rem;
+}
+
+/* Product Price */
+.product-price {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #3e45c0ff;
+  margin-bottom: 0.7rem;
+}
+
+/* Product Description */
+.product-desc {
+  font-size: 0.92rem;
+  color: #555;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  min-height: 50px;
+}
+
+/* Add to Cart Button */
 .add-btn {
-  display: block;
   width: 100%;
   background: linear-gradient(90deg, #667eea, #764ba2);
   color: #fff;
@@ -78,7 +94,6 @@
   font-weight: 500;
   cursor: pointer;
   transition: transform 0.2s ease, background 0.3s ease;
-  text-align: center;
   margin-top: auto;
 }
 
@@ -87,7 +102,12 @@
   transform: translateY(-3px);
 }
 
-/* Fixed Navbar Styles */
+
+
+/* ================================
+   NAVBAR – CLEANED + MERGED
+=================================== */
+
 .fixed-navbar {
   position: fixed;
   top: 0;
@@ -116,7 +136,6 @@
   background: none;
   border: none;
   cursor: pointer;
-  white-space: nowrap;
 }
 
 .desktop-menu {
@@ -131,10 +150,9 @@
   background: none;
   border: none;
   cursor: pointer;
-  text-decoration: none;
   padding: 0.5rem;
-  white-space: nowrap;
   transition: color 0.3s ease;
+  text-decoration: none;
 }
 
 .nav-link:hover {
@@ -147,6 +165,7 @@
   gap: 1rem;
 }
 
+/* Cart Badge */
 .cart-icon {
   position: relative;
   cursor: pointer;
@@ -162,13 +181,9 @@
   padding: 2px 6px;
   font-size: 0.75rem;
   font-weight: bold;
-  min-width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
+/* User Button / Dropdown */
 .user-section {
   position: relative;
 }
@@ -183,36 +198,27 @@
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
-  white-space: nowrap;
 }
 
 .user-dropdown-menu {
   position: absolute;
-  top: 100%;
   right: 0;
+  top: 100%;
   background: white;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  z-index: 100;
   min-width: 150px;
   margin-top: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .dropdown-logout {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
   width: 100%;
   padding: 0.75rem 1rem;
-  background: none;
   border: none;
+  background: none;
   cursor: pointer;
-  color: #374151;
-  font-size: 0.9rem;
-  white-space: nowrap;
+  text-align: left;
 }
 
 .dropdown-logout:hover {
@@ -220,25 +226,17 @@
 }
 
 .login-icon {
-  color: #2563eb;
-  text-decoration: none;
   padding: 0.5rem;
   border-radius: 50%;
   display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.login-icon:hover {
-  background: rgba(37, 99, 235, 0.1);
-}
-
+/* Mobile Menu */
 .mobile-menu-btn {
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 0.5rem;
   display: none;
+  background: none;
+  border: none;
+  padding: 0.5rem;
 }
 
 .mobile-menu {
@@ -250,26 +248,20 @@
 }
 
 .mobile-nav-link {
-  width: 100%;
   padding: 0.75rem;
-  text-align: left;
-  border: none;
-  background: none;
-  color: #374151;
-  cursor: pointer;
   border-bottom: 1px solid #f3f4f6;
+  text-align: left;
+  background: none;
+  border: none;
 }
 
 .mobile-cart-btn {
   background: linear-gradient(90deg, #facc15, #fbbf24);
-  color: #111827;
   padding: 0.75rem;
   border-radius: 8px;
   font-weight: bold;
-  text-decoration: none;
   text-align: center;
   margin: 0.5rem 0;
-  display: block;
 }
 
 .mobile-user {
@@ -277,66 +269,20 @@
   border-top: 1px solid #e5e7eb;
 }
 
-.mobile-user-welcome {
-  margin: 0 0 0.5rem;
-  font-weight: 500;
-  font-size: 0.9rem;
-  color: #374151;
-}
-
-.mobile-user-logout {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #f3f4f6;
-  border: 1px solid #d1d5db;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  width: 100%;
-  font-size: 0.9rem;
-  color: #374151;
-}
-
 .mobile-login {
   background: #2563eb;
   color: white;
   padding: 0.75rem;
   border-radius: 8px;
-  font-weight: bold;
-  text-decoration: none;
-  text-align: center;
-  display: block;
   margin-top: 0.5rem;
 }
 
-/* Responsive Design */
+/* Responsive */
 @media (max-width: 768px) {
   .desktop-menu {
     display: none;
   }
-  
   .mobile-menu-btn {
     display: block;
   }
-  
-  .navbar-container {
-    padding: 0.5rem 1rem;
-  }
 }
-
-@media (max-width: 640px) {
-  .nav-right {
-    gap: 0.5rem;
-  }
-  
-  .user-button {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
-  }
-  
-  .logo-btn {
-    font-size: 1.3rem;
-  }
-}
-

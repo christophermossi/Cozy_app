@@ -194,31 +194,22 @@ const Products = ({ user, onLogout }) => {
         )}
       </nav>
 
-      <h1
-        style={{
-          fontSize: "2.2rem",
-          fontWeight: "bold",
-          color: "#3d4550ff",
-          textAlign: "center",
-          margin: "1rem 0",
-        }}
-      >
-        Our Premium A4 Paper Collection
-      </h1>
+     <h1 className="products-title">Our Premium A4 Paper Collection</h1>
+
 
       {/* Loading/Error */}
     
       
 
       {/* Products Grid */}
-      <div style={styles.grid}>
+      <div className="products-grid">
         {products.map((product) => (
-          <div key={product._id} style={styles.card}>
-            <h2 style={styles.title}>{product.ProductName}</h2>
+          <div key={product._id} className="product-card">
+           <h2 className="product-title">{product.ProductName}</h2>
             <img className="imgpart" src={product.ImageURL} alt={product.ProductName} />
-            <p style={styles.price}>{product.Price}</p>
-            <p style={styles.desc}>{product.Description}</p>
-            <button style={styles.btn} onClick={() => handleAddToCart(product)}>
+            <p className="product-price">{product.Price}</p>
+            <p className="product-desc">{product.Description}</p>
+            <button className="add-btn" onClick={() => handleAddToCart(product)}>
               Add to Cart
             </button>
           </div>
