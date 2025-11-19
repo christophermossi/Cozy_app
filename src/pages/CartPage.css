@@ -245,6 +245,7 @@
 
 .cart-user-section {
   position: relative;
+  
 }
 
 .cart-user-btn {
@@ -260,6 +261,7 @@
   font-size: 0.9rem;
   font-weight: 500;
   white-space: nowrap;
+  
 }
 
 .cart-user-dropdown {
@@ -273,6 +275,7 @@
   z-index: 100;
   min-width: 150px;
   margin-top: 0.5rem;
+
 }
 
 .cart-logout-btn {
@@ -287,10 +290,12 @@
   color: #374151;
   font-size: 0.9rem;
   white-space: nowrap;
+  
 }
 
 .cart-logout-btn:hover {
-  background: #f3f4f6;
+  background: #616366;
+ 
 }
 
 .cart-login-link {
@@ -301,6 +306,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: transparent;
+  border-color: #2563eb;
 }
 
 .cart-login-link:hover {

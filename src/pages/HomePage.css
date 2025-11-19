@@ -102,6 +102,7 @@
   border: none;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
 }
 
 .shop-now-btn:hover {
@@ -149,7 +150,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #374151;
+  color:#111827;
   font-size: 0.9rem;
 }
 
@@ -161,15 +162,15 @@
   color: #2563eb;
   text-decoration: none;
   padding: 0.5rem;
-  border-radius: 50%;
+  border-radius: 500%;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: white;
+  border-color: #1e40af;
+  margin-left: 20px;
 }
 
-.login-btn:hover {
-  background: rgba(37, 99, 235, 0.1);
-}
 
 .menu-mobile-btn {
   display: none;

@@ -65,6 +65,17 @@ const Products = ({ user, onLogout }) => {
     if (success && !cartError) console.log("Added to cart successfully");
   };
 
+  // Remove empty, null, undefined, or incomplete products
+const validProducts = products.filter(
+  (p) =>
+    p &&
+    p._id &&
+    p.ProductName &&
+    p.ImageURL &&
+    p.Price &&
+    p.Description
+);
+
   return (
     <div style={{ paddingTop: "80px" }}>
       {/* Navbar */}
@@ -202,28 +213,130 @@ const Products = ({ user, onLogout }) => {
       
 
       {/* Products Grid */}
-      <div className="products-grid">
-        {products.map((product) => (
-          <div key={product._id} className="product-card">
-           <h2 className="product-title">{product.ProductName}</h2>
-            <img className="imgpart" src={product.ImageURL} alt={product.ProductName} />
-            <p className="product-price">{product.Price}</p>
-            <p className="product-desc">{product.Description}</p>
-            <button className="add-btn" onClick={() => handleAddToCart(product)}>
-              Add to Cart
-            </button>
-          </div>
-        ))}
-      </div>
+     <div className="products-grid">
+  {validProducts.map((product) => (
+    <div key={product._id} className="product-card">
+      <h2 className="product-title">{product.ProductName}</h2>
+      <img className="imgpart" src={product.ImageURL} alt={product.ProductName} />
+      <p className="product-price">{product.Price}</p>
+      <p className="product-desc">{product.Description}</p>
+      <button className="add-btn" onClick={() => handleAddToCart(product)}>
+        Add to Cart
+      </button>
+    </div>
+  ))}
+</div>
+{/* About Us Section */}
+<div
+  className="about-us-section"
+  style={{
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "3rem 2rem",
+    marginTop: "2rem",
+    backgroundColor: "#f9fafb",
+    borderRadius: "0.5rem",
+    gap: "2rem",
+    flexWrap: "wrap",
+    marginLeft: "30px",
+    width: "95%"
+  }}
+>
+  {/* Image */}
+  <div style={{ flex: "1 1 300px", textAlign: "center" }}>
+    <img
+      src="https://twosides.info/wp-content/uploads/2023/06/The-Importance-Of-Paper-Based-Materials-In-Education-e1687338164565.jpg"
+      alt="Office supplies"
+      style={{ width: "100%", maxWidth: "400px", borderRadius: "0.5rem", boxShadow: "0 4px 10px rgba(0,0,0,0.1)" }}
+    />
+  </div>
 
-      <footer className="footer">
-  <h4>Office.Com</h4>
-  <p>© {new Date().getFullYear()} Office.Com. All rights reserved.</p>
-  <p>
-    <Link to="/">Home</Link> | <Link to="/productpage">Products</Link> |{" "}
-    <Link to="/contact">Contact</Link>
-  </p>
-</footer>
+  {/* Text */}
+  <div style={{ flex: "1 1 400px", maxWidth: "600px", color: "#374151" }}>
+    <h2 style={{ marginBottom: "1rem", color: "#1f2937", fontSize: "2rem" }}>About Office.Com</h2>
+    <p style={{ marginBottom: "1rem", lineHeight: "1.6" }}>
+      Welcome to <strong>Office.Com</strong>, your trusted source for premium A4 paper and top-quality office supplies.
+      We are committed to providing products that make your work and study life easier, more organized, and productive.
+    </p>
+    <p style={{ marginBottom: "1rem", lineHeight: "1.6" }}>
+      Our team carefully curates each item to ensure the highest quality and best value for our customers.
+      From fast shipping to responsive support, we aim to make your shopping experience seamless and enjoyable.
+    </p>
+    <p style={{ lineHeight: "1.6" }}>
+      Thank you for choosing <strong>Office.Com</strong> as your go-to destination for all your office essentials. 
+      We look forward to supporting your productivity every day!
+    </p>
+  </div>
+
+  {/* About Us Section 2 */}
+<div
+  className="about-us-section-2"
+  style={{
+    display: "flex",
+    flexDirection: "row-reverse", // image on the other side
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "3rem 2rem",
+    marginTop: "2rem",
+    backgroundColor: "#ffffff",
+    borderRadius: "0.5rem",
+    gap: "2rem",
+    flexWrap: "wrap",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+  }}
+>
+  {/* Image */}
+  <div style={{ flex: "1 1 300px", textAlign: "center" }}>
+    <img
+      src="https://img.freepik.com/free-photo/business-team-working-together_23-2149333016.jpg?semt=ais_hybrid&w=740&q=80"
+      alt="Quality service"
+      style={{ width: "100%", maxWidth: "400px", borderRadius: "0.5rem", boxShadow: "0 4px 10px rgba(0,0,0,0.1)" }}
+    />
+  </div>
+
+  {/* Text */}
+  <div style={{ flex: "1 1 400px", maxWidth: "600px", color: "#374151" }}>
+    <h2 style={{ marginBottom: "1rem", color: "#1f2937", fontSize: "2rem" }}>Our Commitment</h2>
+    <p style={{ marginBottom: "1rem", lineHeight: "1.6" }}>
+      At <strong>Office.Com</strong>, we don’t just sell office supplies – we provide solutions. Our goal is to make
+      every workspace efficient and inspiring by offering products that combine quality, affordability, and style.
+    </p>
+    <p style={{ lineHeight: "1.6" }}>
+      We pride ourselves on fast shipping, excellent customer support, and a curated selection that meets the
+      needs of professionals, students, and businesses alike. Your satisfaction is our top priority, and we are
+      constantly innovating to serve you better.
+    </p>
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+
+     <footer
+             className="first-footer"
+             style={{
+               width: "100%",
+               backgroundColor: "#1f2937",
+               padding: "1rem",
+               textAlign: "center",
+               borderTop: "1px solid #e5e7eb",
+               color: "#f3f4f6",
+             }}
+           >
+             <h4>Office.Com</h4>
+             <p>© {new Date().getFullYear()} Office.Com. All rights reserved.</p>
+             <p>
+               <Link to="/" style={{ color: "#f3f4f6", margin: "0 0.5rem" }}>Home</Link> | 
+               <Link to="/productpage" style={{ color: "#f3f4f6", margin: "0 0.5rem" }}>Products</Link> |
+               <Link to="/contact" style={{ color: "#f3f4f6", margin: "0 0.5rem" }}>Contact</Link>
+             </p>
+           </footer>
 
 
       <LoginModal

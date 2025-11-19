@@ -14,10 +14,10 @@
 /* Products Grid */
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.7rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
   padding: 2rem;
-  background: #f8f9fc;
+  margin-left: 50px;
 }
 
 /* Product Card */
@@ -198,6 +198,7 @@
   border-radius: 8px;
   border: none;
   cursor: pointer;
+  
 }
 
 .user-dropdown-menu {
@@ -210,6 +211,7 @@
   min-width: 150px;
   margin-top: 0.5rem;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  
 }
 
 .dropdown-logout {
@@ -219,6 +221,7 @@
   background: none;
   cursor: pointer;
   text-align: left;
+  color: #373737
 }
 
 .dropdown-logout:hover {
@@ -229,6 +232,9 @@
   padding: 0.5rem;
   border-radius: 50%;
   display: flex;
+  background-color: transparent;
+  color: #2563eb;
+  border-color: #2563eb;
 }
 
 /* Mobile Menu */

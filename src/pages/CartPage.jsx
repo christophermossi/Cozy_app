@@ -349,7 +349,7 @@ const Cart = ({ user, onLogout }) => {
       </div>
 
       <footer
-        className="footer"
+        className="first-footer"
         style={{
           width: "100%",
           backgroundColor: "#1f2937",
