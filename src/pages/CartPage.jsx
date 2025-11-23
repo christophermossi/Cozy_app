@@ -27,30 +27,34 @@ const Cart = ({ user, onLogout }) => {
   const [showSignUpModal, setShowSignUpModal] = useState(false);
   const navigate = useNavigate();
 
+  // Load cart from localStorage and backend
   useEffect(() => {
+    // Load from localStorage first
+    const savedCart = localStorage.getItem("cartItems");
+    if (savedCart) {
+      loadCartItemsWithAPI(JSON.parse(savedCart));
+    }
+
     const fetchCartItems = async () => {
       try {
-        const data = await callBackend("/cart"); // Use IpContext to fetch cart items
+        const data = await callBackend("/Cart");
         if (!data) throw new Error("Failed to load cart items");
-        // Assuming loadCartItemsWithAPI updates the ShopContext with the fetched data
         loadCartItemsWithAPI(data);
+
+        // Save to localStorage
+        localStorage.setItem("cartItems", JSON.stringify(data));
       } catch (err) {
         console.error("Error fetching cart items:", err);
       }
     };
 
-    const fetchOrders = async () => {
-      try {
-        const data = await callBackend("/api/orders"); // Fetch orders using IpContext
-        console.log("Orders:", data);
-      } catch (err) {
-        console.error("Error fetching orders:", err);
-      }
-    };
-
     fetchCartItems();
-    fetchOrders();
   }, [callBackend, loadCartItemsWithAPI]);
+
+  // Update localStorage whenever cartItems change
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -102,7 +106,7 @@ const Cart = ({ user, onLogout }) => {
 
           {/* Desktop Menu */}
           <div className="cart-desktop-menu">
-            {["Home", "Products", "Services", "About", "Contact"].map((item) =>
+            {["Home", "Products", "Contact"].map((item) =>
               item === "Home" ? (
                 <Link key={item} to="/" className="cart-nav-link">
                   {item}
@@ -130,7 +134,7 @@ const Cart = ({ user, onLogout }) => {
           <div className="cart-nav-right">
             {/* Cart Icon */}
             <div className="cart-icon-section">
-              <Link to="/cart">
+              <Link to="/Cart">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -361,11 +365,7 @@ const Cart = ({ user, onLogout }) => {
       >
         <h4>Office.Com</h4>
         <p>© {new Date().getFullYear()} Office.Com. All rights reserved.</p>
-        <p>
-          <Link to="/" style={{ color: "#f3f4f6", margin: "0 0.5rem" }}>Home</Link> | 
-          <Link to="/productpage" style={{ color: "#f3f4f6", margin: "0 0.5rem" }}>Products</Link> |
-          <Link to="/contact" style={{ color: "#f3f4f6", margin: "0 0.5rem" }}>Contact</Link>
-        </p>
+     
       </footer>
 
       {/* Login Modal */}

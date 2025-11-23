@@ -4,6 +4,7 @@ import { IpProvider } from './context/IpContext';
 import { ShopProvider } from './context/ShopContext';
 import Homepage from './pages/HomePage';
 import Products from './pages/ProductPage';
+import ContactUs from './components/ContactUs';
 import Cart from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import PaymentPage from './pages/PaymentPage';
@@ -37,6 +38,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Homepage user={user} onLogout={handleLogout} />} />
               <Route path="/productpage" element={<Products user={user} onLogout={handleLogout} />} />
+              <Route path="/contact" element={<ContactUs user={user} onLogout={handleLogout} />} />
               <Route path="/cart" element={<Cart user={user} onLogout={handleLogout} />} />
               <Route path="/checkout" element={<CheckoutPage user={user} onLogout={handleLogout} />} />
               <Route path="/payment" element={<PaymentPage user={user} onLogout={handleLogout} />} />

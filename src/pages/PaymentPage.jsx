@@ -139,7 +139,7 @@ const PaymentPage = ({ user, onLogout }) => {
           </button>
 
           <div className="payment-desktop-menu">
-            {["Home", "Products", "Cart", "About", "Contact"].map((item) =>
+            {["Home", "Products", "Cart","Contact"].map((item) =>
               item === "Home" ? (
                 <Link key={item} to="/" className="payment-nav-link">
                   {item}
@@ -398,15 +398,7 @@ const PaymentPage = ({ user, onLogout }) => {
         </div>
       )}
 
-      {/* Footer */}
-      <footer className="footer">
-        <h4>Office.Com</h4>
-        <p>© {new Date().getFullYear()} Office.Com. All rights reserved.</p>
-        <p>
-          <Link to="/">Home</Link> | <Link to="/productpage">Products</Link> |{" "}
-          <Link to="/contact">Contact</Link>
-        </p>
-      </footer>
+    
     </div>
   );
 };

@@ -14,10 +14,10 @@
 /* Products Grid */
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(298px, 1fr));
   gap: 2rem;
   padding: 2rem;
-  margin-left: 50px;
+ 
 }
 
 /* Product Card */
@@ -140,8 +140,9 @@
 
 .desktop-menu {
   display: flex;
-  gap: 1.5rem;
+  gap: -2rem;
   align-items: center;
+  
 }
 
 .nav-link {

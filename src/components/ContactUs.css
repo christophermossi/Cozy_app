@@ -1,0 +1,399 @@
+/* ================================
+   CONTACT US PAGE - PINK GRADIENT STYLE
+=================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.contact-page {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+}
+
+.contact-content {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.contact-form-container {
+  background: rgba(139, 158, 219, 0.4);
+  backdrop-filter: blur(10px);
+  border-radius: 1.5rem;
+  padding: 3rem;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  margin: auto;
+}
+
+.form-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #4b5563;
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #4b5563;
+}
+
+.contact-form-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-field label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  color: #1f2937;
+  background: white;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.form-control:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #2563eb;
+}
+
+.form-textarea-main {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.submit-button {
+  background: #000000;
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  text-transform: uppercase;
+}
+
+.submit-button:hover {
+  background: #1f2937;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.submit-button:active {
+  transform: translateY(0);
+}
+
+.success-alert {
+  background: #d1fae5;
+  color: #065f46;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  font-weight: 500;
+  margin-top: 1rem;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Navbar Styles */
+.fixed-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-btn {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2563eb;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.menu-desktop {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.menu-link {
+  font-size: 1rem;
+  color: #4b5563;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: color 0.3s ease;
+  text-decoration: none;
+}
+
+.menu-link:hover {
+  color: #2563eb;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cart-icon {
+  position: relative;
+  cursor: pointer;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #facc15;
+  color: #111827;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.user-section {
+  position: relative;
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.user-dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  min-width: 150px;
+  margin-top: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.dropdown-logout {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  color: #373737;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dropdown-logout:hover {
+  background: #f3f4f6;
+}
+
+.login-icon {
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  background-color: transparent;
+  color: #2563eb;
+  border: none;
+  cursor: pointer;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  color: #4b5563;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  padding: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.mobile-nav-link {
+  padding: 0.75rem;
+  border-bottom: 1px solid #f3f4f6;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #4b5563;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.mobile-cart-btn {
+  background: linear-gradient(90deg, #facc15, #fbbf24);
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+  margin: 0.5rem 0;
+  text-decoration: none;
+  color: #111827;
+}
+
+.mobile-user {
+  padding: 1rem 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+.mobile-user p {
+  margin-bottom: 0.5rem;
+  color: #4b5563;
+}
+
+.mobile-user button {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .menu-desktop {
+    display: none;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .contact-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .contact-form-container {
+    padding: 2rem 1.5rem;
+    max-width: 100%;
+  }
+
+  .form-title {
+    font-size: 1.25rem;
+  }
+
+  .form-field label {
+    font-size: 0.9rem;
+  }
+
+  .form-control {
+    padding: 0.65rem 0.85rem;
+    font-size: 0.95rem;
+  }
+
+  .submit-button {
+    padding: 0.85rem 1.5rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-content {
+    padding: 1rem 0.75rem;
+  }
+
+  .contact-form-container {
+    padding: 1.5rem 1rem;
+    border-radius: 1rem;
+  }
+
+  .form-title {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-form-main {
+    gap: 1.25rem;
+  }
+}
+
+@media (max-height: 700px) {
+  .contact-content {
+    align-items: flex-start;
+    padding-top: 1rem;
+  }
+
+  .contact-form-container {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+}

@@ -31,8 +31,8 @@ const CheckoutPage = ({ user, onLogout }) => {
     UserID: "",
     Password: "",
     Email: ""
-  });
-
+  }); 
+ 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -195,7 +195,7 @@ const CheckoutPage = ({ user, onLogout }) => {
         </button>
 
         <div style={{ display: "flex", gap: "1.7rem" }}>
-          {["Home", "Products", "Cart", "About", "Contact"].map((item) =>
+          {["Home", "Products", "Cart","Contact"].map((item) =>
             item === "Home" ? (
               <Link
                 key={item}
@@ -621,12 +621,9 @@ const CheckoutPage = ({ user, onLogout }) => {
       </div>
       
       <footer className="third-footer">
-        <h4>Office.Com</h4>
-        <p>© {new Date().getFullYear()} Office.Com. All rights reserved.</p>
-        <p>
-          <Link to="/">Home</Link> | <Link to="/productpage">Products</Link> |{" "}
-          <Link to="/contact">Contact</Link>
-        </p>
+         <h4>Office.Com</h4>
+         <p>© {new Date().getFullYear()} Office.Com. All rights reserved.</p>
+      
       </footer>
     </div>
   );
