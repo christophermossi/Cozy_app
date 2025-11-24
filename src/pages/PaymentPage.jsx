@@ -409,7 +409,11 @@ const PaymentPage = ({ user, onLogout }) => {
           </div>
         </div>
       )}
-
+      <footer className="third-footer">
+         <h4>Office.Com</h4>
+         <p>© {new Date().getFullYear()} Office.Com. All rights reserved.</p>
+      
+      </footer>
     
     </div>
   );
