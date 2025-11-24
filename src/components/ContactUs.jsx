@@ -101,6 +101,7 @@ const ContactUs = ({ user, onLogout }) => {
 
   return (
     <div className="contact-page">
+      
       {/* Navbar */}
       <nav className="fixed-navbar">
         <div className="navbar-container">

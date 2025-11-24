@@ -389,6 +389,7 @@ const OrderPage = ({ user, onLogout }) => {
         )}
       </nav>
 
+
       {/* Order Content */}
       <main style={{
         maxWidth: "1200px",
@@ -528,7 +529,9 @@ const OrderPage = ({ user, onLogout }) => {
               Login
             </button>
           </div>
+          
         )}
+        
       </main>
 
       {/* Footer */}

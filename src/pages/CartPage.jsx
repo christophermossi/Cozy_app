@@ -29,7 +29,6 @@ const Cart = ({ user, onLogout }) => {
 
   // Load cart from localStorage and backend
   useEffect(() => {
-    // Load from localStorage first
     const savedCart = localStorage.getItem("cartItems");
     if (savedCart) {
       loadCartItemsWithAPI(JSON.parse(savedCart));
@@ -41,7 +40,6 @@ const Cart = ({ user, onLogout }) => {
         if (!data) throw new Error("Failed to load cart items");
         loadCartItemsWithAPI(data);
 
-        // Save to localStorage
         localStorage.setItem("cartItems", JSON.stringify(data));
       } catch (err) {
         console.error("Error fetching cart items:", err);
@@ -51,7 +49,6 @@ const Cart = ({ user, onLogout }) => {
     fetchCartItems();
   }, [callBackend, loadCartItemsWithAPI]);
 
-  // Update localStorage whenever cartItems change
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
@@ -69,7 +66,7 @@ const Cart = ({ user, onLogout }) => {
     setShowUserMenu(false);
   };
 
-  const handleLoginSuccess = (userData) => {
+  const handleLoginSuccess = () => {
     window.location.reload();
   };
 
@@ -99,12 +96,10 @@ const Cart = ({ user, onLogout }) => {
       {/* Fixed Navbar */}
       <nav className="cart-navbar">
         <div className="cart-navbar-container">
-          {/* Logo */}
           <button className="cart-logo" onClick={() => navigate("/")}>
             Office.Com
           </button>
 
-          {/* Desktop Menu */}
           <div className="cart-desktop-menu">
             {["Home", "Products", "Contact"].map((item) =>
               item === "Home" ? (
@@ -130,9 +125,7 @@ const Cart = ({ user, onLogout }) => {
             )}
           </div>
 
-          {/* Right Section */}
           <div className="cart-nav-right">
-            {/* Cart Icon */}
             <div className="cart-icon-section">
               <Link to="/Cart">
                 <svg
@@ -157,7 +150,6 @@ const Cart = ({ user, onLogout }) => {
               )}
             </div>
 
-            {/* User Section */}
             {user ? (
               <div className="cart-user-section">
                 <button onClick={() => setShowUserMenu(!showUserMenu)} className="cart-user-btn">
@@ -184,60 +176,13 @@ const Cart = ({ user, onLogout }) => {
               </button>
             )}
 
-            {/* Mobile Menu Button */}
             <button onClick={toggleMenu} className="cart-mobile-btn">
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="cart-mobile-menu">
-            {["Home", "Products", "Services", "About", "Contact"].map((item) => (
-              <button
-                key={item}
-                onClick={() => {
-                  if (item === "Home") {
-                    navigate("/");
-                  } else if (item === "Products") {
-                    navigate("/productpage");
-                  } else {
-                    const el = document.getElementById(item.toLowerCase());
-                    if (el) el.scrollIntoView({ behavior: "smooth" });
-                  }
-                  setIsMenuOpen(false);
-                }}
-                className="cart-mobile-link"
-              >
-                {item}
-              </button>
-            ))}
-
-            {/* Mobile User Section */}
-            {user ? (
-              <div className="cart-mobile-user">
-                <p className="cart-mobile-welcome">
-                  Welcome, {user.name}!
-                </p>
-                <button onClick={handleLogout} className="cart-mobile-logout">
-                  <LogOut size={16} />
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <button 
-                onClick={() => setShowLoginModal(true)} 
-                className="cart-mobile-login"
-              >
-                Login
-              </button>
-            )}
-          </div>
-        )}
       </nav>
 
-      {/* Cart Page Content */}
       <div className="page-wrapper">
         <h1 className="title">🛒 Your Shopping Cart</h1>
 
@@ -347,6 +292,21 @@ const Cart = ({ user, onLogout }) => {
               >
                 Proceed to Checkout
               </button>
+
+              {/* Promo Image Under Checkout */}
+              <div style={{ marginTop: "15px", width: "100%", textAlign: "center" }}>
+                <img 
+                  src="https://img.freepik.com/free-vector/online-shopping-concept-landing-page_52683-20156.jpg?semt=ais_hybrid&w=740&q=80" 
+                  alt="Promo Banner" 
+                  style={{
+                    width: "100%",
+                    borderRadius: "8px",
+                    height: "auto",
+                    objectFit: "cover"
+                  }} 
+                />
+              </div>
+
             </div>
           </div>
         )}
@@ -365,10 +325,8 @@ const Cart = ({ user, onLogout }) => {
       >
         <h4>Office.Com</h4>
         <p>© {new Date().getFullYear()} Office.Com. All rights reserved.</p>
-     
       </footer>
 
-      {/* Login Modal */}
       <LoginModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
@@ -376,7 +334,6 @@ const Cart = ({ user, onLogout }) => {
         onLoginSuccess={handleLoginSuccess}
       />
 
-      {/* SignUp Modal */}
       <SignUpModal
         isOpen={showSignUpModal}
         onClose={() => setShowSignUpModal(false)}

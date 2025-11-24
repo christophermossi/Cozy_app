@@ -131,6 +131,18 @@ const PaymentPage = ({ user, onLogout }) => {
 
   return (
     <div className="payment-page-wrapper">
+      {/* 🔹 LEFT SIDE SMALL IMAGES */}
+      <div className="payment-side left-side">
+        <img src="https://img.freepik.com/free-vector/credit-card-landing-page-payment-concept_23-2148298750.jpg?semt=ais_hybrid&w=740&q=80" alt="promo" />
+        <img src="https://img.freepik.com/free-vector/concept-credit-card-payment-landing-page_52683-24923.jpg?semt=ais_hybrid&w=740&q=80" alt="promo" />
+      </div>
+
+      {/* 🔹 RIGHT SIDE SMALL IMAGES */}
+      <div className="payment-side right-side">
+        <img src="https://img.freepik.com/free-photo/3d-render-house-bills-payment-online-invoice_107791-16723.jpg?semt=ais_hybrid&w=740&q=80" alt="promo" />
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6K5wbNEcOsPWyO60lnwjdGfF-szwLtC8Utw&s" alt="promo" />
+      </div>
+
       {/* Fixed Navbar */}
       <nav className="payment-navbar">
         <div className="payment-navbar-container">
