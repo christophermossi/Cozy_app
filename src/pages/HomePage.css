@@ -6,12 +6,11 @@
 }
 
 .page {
-  font-family: 'Inter', sans-serif;
-  color: #333;
-  background-color: #fff;
-  width:109.6%;
- 
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
+
 
 /* Navbar */
 .navbar {
@@ -1286,3 +1285,13 @@ img, .product-img {
   max-width: 100%;
   height: auto;
 }
+
+@media (min-width: 1600px) {
+  .hero-title {
+    font-size: 4rem;
+  }
+  .hero-subtitle {
+    font-size: 1.5rem;
+  }
+}
+
